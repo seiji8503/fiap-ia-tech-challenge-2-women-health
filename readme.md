@@ -8,7 +8,8 @@ Otimizar um modelo de Machine Learning para diagnóstico de tumores (benigno vs 
 Dataset utilizado foi Breast Cancer Wisconsin Dataset.
 
 # Estrutura do Projeto
-'''
+
+```
 fiap-ia-tech-challenge-2-women-health/
 ├── data/                               # Dados brutos
 │   └── breast-cancer-wisconsin-data-set.csv
@@ -22,6 +23,7 @@ fiap-ia-tech-challenge-2-women-health/
 ├── .gitignore                          
 ├── requirements.txt                    # Bibliotecas necessárias
 └── README.md                           # Documentação do projeto
+```
 
 # Preparação de Ambiente
 
