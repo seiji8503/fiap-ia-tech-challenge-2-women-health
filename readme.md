@@ -102,37 +102,35 @@ Os genes podem ser ajustados no bloco Gene Space, sendo parte em lista de itens 
 ```mermaid
 flowchart TD
     %% Base de Dados
-    A[(Dataset: Wisconsin)] --> B[Pré-processamento & Scaling]
+    A[(Dataset: Wisconsin)] --> B1[Notebook 01: Pré-processamento & Scaling]
+    A[(Dataset: Wisconsin)] --> B2[Notebook 02: Random Forest Baseline]
 
-    %% Notebook 01: Comparação
-    subgraph N1 [Notebook 01: Exploração e Baseline]
-        B --> C[Treino de Modelos Base]
-        C --> C1[Logistic Regression]
-        C --> C2[Random Forest]
-        C --> C3[XGBoost]
-        C1 & C2 & C3 --> C4{Avaliação de Métricas}
-        C4 -->|Melhor Equilíbrio| D[Escolha: Random Forest]
+    %% Notebook 01: Fluxo em Paralelo
+    subgraph N1 [Notebook 01: Exploração e Comparação]
+        B1 --> C1[Treino de Modelos Base]
+        C1 --> C2[LogReg / RF / XGBoost]
+        C2 --> C3{Avaliação de Métricas}
     end
 
-    %% Notebook 02: Otimização
+    %% Notebook 02: Otimização via GA
     subgraph N2 [Notebook 02: Algoritmo Genético]
-        D --> G1[Definição do Gene Space]
-        G1 --> G2[Gerar População Inicial]
+        B2 --> G1[População Inicial: 20 indivíduos]
         
-        subgraph GA [Loop de Evolução]
-            G2 --> L1[Avaliar Aptidão: F2-Score + Esp.]
-            L1 --> L2{Max Gerações atingidas?}
+        subgraph GA [Ciclo Evolutivo de Hiperparâmetros]
+            G2[Avaliar Aptidão: F2-Score + Esp.]
+            G3{Critério de Parada: 20 Gerações?}
             
-            L2 -- Não --> L3[Seleção por Torneio]
-            L3 --> L4[Cruzamento / Crossover]
-            L4 --> L5[Mutação Aleatória]
-            L5 --> L6[Substituição com Elitismo]
-            L6 --> L1
+            G3 -- Não --> G4[Seleção por Torneio: size 3]
+            G4 --> G5[Cruzamento / Crossover]
+            G5 --> G6[Mutação Aleatória: 15%]
+            G6 --> G7[Substituição com Elitismo: 2]
+            G7 -- "Início da Próxima Geração" --> G2
         end
+        G1 --> G2
     end
 
-    %% Saída e LLM
-    L2 -- Sim --> E[Melhor Configuração de Hiperparâmetros]
+    %% Finalização e LLM
+    G3 -- Sim --> E[Melhor Configuração de Hiperparâmetros]
     E --> F[Treino do Modelo Final Otimizado]
     F --> G[Geração de Predição & Probabilidades]
     G --> H[LLM: Interpretação Clínica GPT-4]
