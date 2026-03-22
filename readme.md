@@ -101,31 +101,48 @@ Os genes podem ser ajustados no bloco Gene Space, sendo parte em lista de itens 
 
 ```mermaid
 flowchart TD
+    %% Base de Dados
     A[(Dataset: Wisconsin)] --> B[Pré-processamento & Scaling]
-    B --> C[Comparação: LogReg / RF / XGBoost]
-    C -->|Escolha do Modelo| D[Random Forest Baseline]
-    
-    subgraph GA [Ciclo do Algoritmo Genético]
-        D --> G1[Gerar População Inicial]
-        G1 --> G2[Avaliar Aptidão: F2-Score + Esp.]
-        G2 --> G3{Fim das Gerações?}
-        
-        G3 -- Não --> G4[Seleção por Torneio]
-        G4 --> G5[Cruzamento / Crossover]
-        G5 --> G6[Mutação Aleatória]
-        G6 --> G7[Substituição com Elitismo]
-        G7 --> G2
+
+    %% Notebook 01: Comparação
+    subgraph N1 [Notebook 01: Exploração e Baseline]
+        B --> C[Treino de Modelos Base]
+        C --> C1[Logistic Regression]
+        C --> C2[Random Forest]
+        C --> C3[XGBoost]
+        C1 & C2 & C3 --> C4{Avaliação de Métricas}
+        C4 -->|Melhor Equilíbrio| D[Escolha: Random Forest]
     end
 
-    G3 -- Sim --> E[Melhor Conjunto de Hiperparâmetros]
-    E --> F[Treinar Modelo Final Otimizado]
-    F --> G[Predição de Novos Casos]
+    %% Notebook 02: Otimização
+    subgraph N2 [Notebook 02: Algoritmo Genético]
+        D --> G1[Definição do Gene Space]
+        G1 --> G2[Gerar População Inicial]
+        
+        subgraph GA [Loop de Evolução]
+            G2 --> L1[Avaliar Aptidão: F2-Score + Esp.]
+            L1 --> L2{Max Gerações atingidas?}
+            
+            L2 -- Não --> L3[Seleção por Torneio]
+            L3 --> L4[Cruzamento / Crossover]
+            L4 --> L5[Mutação Aleatória]
+            L5 --> L6[Substituição com Elitismo]
+            L6 --> L1
+        end
+    end
+
+    %% Saída e LLM
+    L2 -- Sim --> E[Melhor Configuração de Hiperparâmetros]
+    E --> F[Treino do Modelo Final Otimizado]
+    F --> G[Geração de Predição & Probabilidades]
     G --> H[LLM: Interpretação Clínica GPT-4]
     H --> I[(Audit Log: JSON / JSONL)]
 
-    style GA fill:#f0f4ff,stroke:#0056b3,stroke-width:2px
-    style E fill:#d4edda,stroke:#28a745,stroke-width:2px
-    style H fill:#fff3cd,stroke:#ffc107,stroke-width:2px
+    %% Estilização
+    style N1 fill:#f9f9f9,stroke:#666,stroke-dasharray: 5 5
+    style N2 fill:#f0f4ff,stroke:#0056b3,stroke-width:2px
+    style GA fill:#ffffff,stroke:#0056b3,stroke-dasharray: 2 2
+    style H fill:#fff3cd,stroke:#ffc107
 ```
 
 # Conclusão
