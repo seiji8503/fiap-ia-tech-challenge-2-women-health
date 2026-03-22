@@ -99,8 +99,8 @@ Os genes podem ser ajustados no bloco Gene Space, sendo parte em lista de itens 
 
 # Diagrama Arquitetura em Mermaid
 
-```
-graph TD
+```mermaid
+flowchart TD
     A[(Dataset: Wisconsin)] --> B[Pré-processamento & Scaling]
     B --> C[Random Forest Baseline]
     B --> D[Otimização: Algoritmo Genético]
