@@ -129,7 +129,7 @@ flowchart TB
     Stop -- Sim --> Best["Melhor Modelo Otimizado"]
     Best --> Predict["Predição & Probabilidades"]
     Predict --> LLM["Interpretação Clínica: GPT-4"]
-    LLM --> Audit[("Logs de Interpretação: JSONL")]
+    LLM --> Audit[("Logs de Interpretação: JSON")]
     LLM <--> n2["LLM OpenAI"]
     Fit --> Stop
     n1 --> Fit
