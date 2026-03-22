@@ -102,8 +102,8 @@ Os genes podem ser ajustados no bloco Gene Space, sendo parte em lista de itens 
 ```mermaid
 flowchart TD
     A[(Dataset: Wisconsin)] --> B[Pré-processamento & Scaling]
-    B --> C[Comparação de Baselines: LogReg | RF | XGB]
-    C -->|Escolha: RF| D[Random Forest Baseline]
+    B --> C[Comparação: LogReg / RF / XGBoost]
+    C -->|Escolha do Modelo| D[Random Forest Baseline]
     
     subgraph GA [Ciclo do Algoritmo Genético]
         D --> G1[Gerar População Inicial]
