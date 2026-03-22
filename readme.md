@@ -102,23 +102,30 @@ Os genes podem ser ajustados no bloco Gene Space, sendo parte em lista de itens 
 ```mermaid
 flowchart TD
     A[(Dataset: Wisconsin)] --> B[Pré-processamento & Scaling]
-    B --> C[Random Forest Baseline]
-    B --> D[Otimização: Algoritmo Genético]
+    B --> C[Comparação de Baselines: LogReg | RF | XGB]
+    C -->|Escolha: RF| D[Random Forest Baseline]
     
-    subgraph GA [Processo Evolutivo]
-        D --> D1[Seleção por Torneio]
-        D1 --> D2[Crossover & Mutação]
-        D2 --> D3{Avaliação: F2-Score + Esp.}
-        D3 -- Evolução --> D1
+    subgraph GA [Ciclo do Algoritmo Genético]
+        D --> G1[Gerar População Inicial]
+        G1 --> G2[Avaliar Aptidão: F2-Score + Esp.]
+        G2 --> G3{Fim das Gerações?}
+        
+        G3 -- Não --> G4[Seleção por Torneio]
+        G4 --> G5[Cruzamento / Crossover]
+        G5 --> G6[Mutação Aleatória]
+        G6 --> G7[Substituição com Elitismo]
+        G7 --> G2
     end
 
-    D3 --> E[Melhor Hiperparâmetro]
-    E --> F[Modelo Final Otimizado]
-    F --> G[Predição de Casos]
-    G --> H[LLM: Interpretação GPT-4]
-    H --> I[(Logs: JSON / JSONL)]
+    G3 -- Sim --> E[Melhor Conjunto de Hiperparâmetros]
+    E --> F[Treinar Modelo Final Otimizado]
+    F --> G[Predição de Novos Casos]
+    G --> H[LLM: Interpretação Clínica GPT-4]
+    H --> I[(Audit Log: JSON / JSONL)]
 
     style GA fill:#f0f4ff,stroke:#0056b3,stroke-width:2px
+    style E fill:#d4edda,stroke:#28a745,stroke-width:2px
+    style H fill:#fff3cd,stroke:#ffc107,stroke-width:2px
 ```
 
 # Conclusão
