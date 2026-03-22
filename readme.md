@@ -99,6 +99,7 @@ Os genes podem ser ajustados no bloco Gene Space, sendo parte em lista de itens 
 
 # Diagrama Arquitetura em Mermaid
 
+```
 flowchart TD
     A[(Dataset: Wisconsin)] --> B[Pré-processamento & Scaling]
     B --> C[Random Forest Baseline]
@@ -118,6 +119,7 @@ flowchart TD
     H --> I[(Logs: JSON / JSONL)]
 
     style GA fill:#f0f4ff,stroke:#0056b3,stroke-width:2px
+```
 
 # Conclusão
 
