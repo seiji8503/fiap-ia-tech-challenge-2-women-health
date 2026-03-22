@@ -8,7 +8,7 @@ Otimizar um modelo de Machine Learning para diagnóstico de tumores (benigno vs 
 Dataset utilizado foi Breast Cancer Wisconsin Dataset.
 
 # Estrutura do Projeto
-
+'''
 fiap-ia-tech-challenge-2-women-health/
 ├── data/                               # Dados brutos
 │   └── breast-cancer-wisconsin-data-set.csv
@@ -105,17 +105,17 @@ flowchart TD
     subgraph GA [Processo Evolutivo]
         D --> D1[Seleção por Torneio]
         D1 --> D2[Crossover & Mutação]
-        D2 --> D3{Avaliação: F2-Score}
-        D3 -- Repete --> D1
+        D2 --> D3{Avaliação: F2-Score + Esp.}
+        D3 -- Evolução --> D1
     end
 
     D3 --> E[Melhor Hiperparâmetro]
     E --> F[Modelo Final Otimizado]
-    F --> G[Predição de Novos Casos]
-    G --> H[LLM: Interpretação Clínica GPT]
-    H --> I[(Logs de Auditoria: JSON/JSONL)]
-    
-    style GA fill:#f9f,stroke:#333,stroke-width:2px
+    F --> G[Predição de Casos]
+    G --> H[LLM: Interpretação GPT-4]
+    H --> I[(Logs: JSON / JSONL)]
+
+    style GA fill:#f0f4ff,stroke:#0056b3,stroke-width:2px
 
 # Conclusão
 
