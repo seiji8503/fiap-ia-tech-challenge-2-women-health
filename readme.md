@@ -9,30 +9,35 @@ Dataset utilizado foi Breast Cancer Wisconsin Dataset.
 
 # Estrutura do Projeto
 
-├── notebooks/
-│   ├── 01_eda_baseline.ipynb
-│   ├── 02_genetic_algorithm_rf.ipynb
-│
-├── data/
+fiap-ia-tech-challenge-2-women-health/
+├── data/                               # Dados brutos
 │   └── breast-cancer-wisconsin-data-set.csv
-│
-├── README.md
+├── notebooks/                          # Experimentos e EDAs
+│   ├── 01_eda_women_health.ipynb
+│   └── 02_genetic_algorithm_rf.ipynb
+├── src/                                # Scripts Python (Módulos)
+│   └── llm_openai.py
+├── outputs/                            # Logs e arquivos gerados
+├── .env                                # Chaves de API
+├── .gitignore                          
+├── requirements.txt                    # Bibliotecas necessárias
+└── README.md                           # Documentação do projeto
 
 # Preparação de Ambiente
 
 ### 1) Criar um ambiente virtual (venv)
 
-# Cria uma pasta `.venv/` contendo um Python “isolado” para este projeto.
-# Evita conflitos de dependências entre projetos diferentes.  
+Cria uma pasta `.venv/` contendo um Python “isolado” para este projeto.
+Evita conflitos de dependências entre projetos diferentes.  
 python -m venv .venv
 
-# Ativa ambiente virtual e troca o python terminal para dentro de .venv
+### Ativa ambiente virtual e troca o python terminal para dentro de .venv
 .\.venv\Scripts\Activate.ps1
 
-# Instala bibliotecas
+### Instala bibliotecas
 pip install -r requirements.txt
 
-# VS Code
+### VS Code
 "Select Kernel" (ou onde aparece a versão do Python, ex: "Python 3.10...")
 "Python Environments...".
 python ou ('venv': venv)
@@ -93,14 +98,24 @@ Os genes podem ser ajustados no bloco Gene Space, sendo parte em lista de itens 
 # Diagrama Arquitetura em Mermaid
 
 flowchart TD
-    A[Dataset] --> B[Pré-processamento]
+    A[(Dataset: Wisconsin)] --> B[Pré-processamento & Scaling]
     B --> C[Random Forest Baseline]
-    B --> D[Algoritmo Genético]
-    D --> E[Melhor conjunto de hiperparâmetros]
-    E --> F[Modelo Otimizado]
-    F --> G[Predição no teste]
-    G --> H[LLM para interpretação]
-    H --> I[Saída textual salva em JSON/JSONL]
+    B --> D[Otimização: Algoritmo Genético]
+    
+    subgraph GA [Processo Evolutivo]
+        D --> D1[Seleção por Torneio]
+        D1 --> D2[Crossover & Mutação]
+        D2 --> D3{Avaliação: F2-Score}
+        D3 -- Repete --> D1
+    end
+
+    D3 --> E[Melhor Hiperparâmetro]
+    E --> F[Modelo Final Otimizado]
+    F --> G[Predição de Novos Casos]
+    G --> H[LLM: Interpretação Clínica GPT]
+    H --> I[(Logs de Auditoria: JSON/JSONL)]
+    
+    style GA fill:#f9f,stroke:#333,stroke-width:2px
 
 # Conclusão
 
