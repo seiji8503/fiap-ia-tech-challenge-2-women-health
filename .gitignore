@@ -1,7 +1,17 @@
-.env
+# Ambiente virtual
 .venv/
-__pycache__/
+venv/
+
+# Variáveis sensíveis
+.env
+
+# Jupyter
 .ipynb_checkpoints/
+
+# Python
+__pycache__/
 *.pyc
+
+# Saídas geradas
 reports/figures/
 .DS_Store

@@ -90,6 +90,18 @@ Os genes podem ser ajustados no bloco Gene Space, sendo parte em lista de itens 
 5. n_estimators: melhora estabilidade
 6. max_features: quantidade máxima de colunas (características) que cada árvore pode enxergar
 
+# Diagrama Arquitetura em Mermaid
+
+flowchart TD
+    A[Dataset] --> B[Pré-processamento]
+    B --> C[Random Forest Baseline]
+    B --> D[Algoritmo Genético]
+    D --> E[Melhor conjunto de hiperparâmetros]
+    E --> F[Modelo Otimizado]
+    F --> G[Predição no teste]
+    G --> H[LLM para interpretação]
+    H --> I[Saída textual salva em JSON/JSONL]
+
 # Conclusão
 
 O modelo baseline apresentou desempenho elevado, com alta especificidade e precisão, porém com limitações na detecção de todos os casos malignos, resultando em mais falsos negativos

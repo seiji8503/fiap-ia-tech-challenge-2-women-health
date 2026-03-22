@@ -9,3 +9,5 @@ shap
 joblib
 xgboost
 shap
+openai
+dotenv
