@@ -100,47 +100,49 @@ Os genes podem ser ajustados no bloco Gene Space, sendo parte em lista de itens 
 # Diagrama Arquitetura em Mermaid
 
 ```mermaid
-flowchart TD
-    %% Base de Dados
-    A[(Dataset: Wisconsin)] --> B1[Notebook 01: Pré-processamento & Scaling]
-    A[(Dataset: Wisconsin)] --> B2[Notebook 02: Random Forest Baseline]
+flowchart TB
+ subgraph N1["Análise de Baselines"]
+        Pre["Pré-processamento & Scaling"]
+        N1_Start["Notebook 01: Exploração"]
+        Comp["Comparação: LogReg / RF / XGBoost"]
+        Eval_N1["Avaliação de Métricas"]
+  end
+ subgraph Loop["Ciclo de Melhoria"]
+        Fit["Avaliação de Aptidão: F2-Score + Sensibilidade"]
+        Stop{"Gerações?"}
+        Genetic["Seleção / Crossover / Mutação"]
+        Elite["Elitismo"]
+        n1["Próxima Geração"]
+  end
+ subgraph N2["Algoritmo Genético - Random Forest"]
+        Base["Definição do Baseline"]
+        N2_Start["Notebook 02: Otimização"]
+        Loop
+  end
+    Data[("Dataset: Wisconsin")] --> N1_Start & N2_Start
+    N1_Start --> Pre
+    Pre --> Comp
+    Comp --> Eval_N1
+    N2_Start --> Base
+    Stop -- Não --> Genetic
+    Genetic --> Elite
+    Stop -- Sim --> Best["Melhor Modelo Otimizado"]
+    Best --> Predict["Predição & Probabilidades"]
+    Predict --> LLM["Interpretação Clínica: GPT-4"]
+    LLM --> Audit[("Logs de Interpretação: JSONL")]
+    LLM <--> n2["LLM OpenAI"]
+    Fit --> Stop
+    n1 --> Fit
+    Elite --> n1
+    Base --> Fit
 
-    %% Notebook 01: Fluxo em Paralelo
-    subgraph N1 [Notebook 01: Exploração e Comparação]
-        B1 --> C1[Treino de Modelos Base]
-        C1 --> C2[LogReg / RF / XGBoost]
-        C2 --> C3{Avaliação de Métricas}
-    end
-
-    %% Notebook 02: Otimização via GA
-    subgraph N2 [Notebook 02: Algoritmo Genético]
-        B2 --> G1[População Inicial: 20 indivíduos]
-        
-        subgraph GA [Ciclo Evolutivo de Hiperparâmetros]
-            G2[Avaliar Aptidão: F2-Score + Esp.]
-            G3{Critério de Parada: 20 Gerações?}
-            
-            G3 -- Não --> G4[Seleção por Torneio: size 3]
-            G4 --> G5[Cruzamento / Crossover]
-            G5 --> G6[Mutação Aleatória: 15%]
-            G6 --> G7[Substituição com Elitismo: 2]
-            G7 -- "Início da Próxima Geração" --> G2
-        end
-        G1 --> G2
-    end
-
-    %% Finalização e LLM
-    G3 -- Sim --> E[Melhor Configuração de Hiperparâmetros]
-    E --> F[Treino do Modelo Final Otimizado]
-    F --> G[Geração de Predição & Probabilidades]
-    G --> H[LLM: Interpretação Clínica GPT-4]
-    H --> I[(Audit Log: JSON / JSONL)]
-
-    %% Estilização
-    style N1 fill:#f9f9f9,stroke:#666,stroke-dasharray: 5 5
-    style N2 fill:#f0f4ff,stroke:#0056b3,stroke-width:2px
-    style GA fill:#ffffff,stroke:#0056b3,stroke-dasharray: 2 2
-    style H fill:#fff3cd,stroke:#ffc107
+    Eval_N1@{ shape: rect}
+    n1@{ shape: rect}
+    n2@{ shape: rect}
+    style Loop fill:#ffffff,stroke:#0056b3,stroke-dasharray: 3 3
+    style LLM fill:#fff9e6,stroke:#d4a017
+    style N1 fill:#fcfcfc,stroke:#999,stroke-dasharray: 5 5
+    style N2 fill:#f0f7ff,stroke:#0056b3,stroke-width:2px
 ```
 
 # Conclusão
