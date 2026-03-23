@@ -1,6 +1,6 @@
 # Tech Challenge FIAP — Fase 2
 ## Otimização de Modelo de Diagnóstico com Algoritmo Genético
-## Grupo 100
+## Grupo 19
 
 # Objetivo
 
